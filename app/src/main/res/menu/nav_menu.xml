@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_main"
+            android:icon="@drawable/map_24dp_000000"
+            android:title="@string/txt_main"
+            />
+        <item
+            android:id="@+id/nav_profile"
+            android:icon="@drawable/baseline_account_circle_128"
+            android:title="@string/txt_profile"
+            />
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/settings_24dp_000000"
+            android:title="@string/txt_settings" />
+    </group>
+</menu>

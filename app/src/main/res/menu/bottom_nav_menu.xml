@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/bottom_nav_menu_map"
+        android:icon="@drawable/map_24dp_000000"
+        android:title="@string/txt_map" />
+    <item
+        android:id="@+id/bottom_nav_menu_routes"
+        android:icon="@drawable/routes_24dp_000000"
+        android:title="@string/txt_routes" />
+    <item
+        android:id="@+id/bottom_nav_menu_history"
+        android:icon="@drawable/history_24dp_000000"
+        android:title="@string/txt_history" />
+    <item
+        android:id="@+id/bottom_nav_menu_users"
+        android:icon="@drawable/users_24dp_000000"
+        android:title="@string/txt_users" />
+</menu>

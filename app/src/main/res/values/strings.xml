@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">CoolTour</string>
+    <string name="txt_profile">Профиль</string>
+    <string name="txt_settings">Настройки</string>
+    <string name="txt_empty">Пусто</string>
+    <string name="txt_empty_user_name">empty_user_name</string>
+    <string name="txt_history">История</string>
+    <string name="txt_routes">Маршруты</string>
+    <string name="txt_users">Пользователи</string>
+    <string name="txt_map">Карта</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="nav_drawer_open">Open nav drawer</string>
+    <string name="nav_drawer_close">Close nav drawer</string>
+    <string name="txt_main">Главная</string>
+</resources>
