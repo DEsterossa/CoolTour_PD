@@ -1,7 +1,9 @@
 package com.initiative.cmd.cooltour;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.RelativeLayout;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
@@ -20,9 +22,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.initiative.cmd.cooltour.fragments.HistoryFragment;
 import com.initiative.cmd.cooltour.fragments.MapFragment;
-import com.initiative.cmd.cooltour.fragments.ProfileFragment;
 import com.initiative.cmd.cooltour.fragments.RoutesFragment;
-import com.initiative.cmd.cooltour.fragments.SettingsFragment;
 import com.initiative.cmd.cooltour.fragments.UsersFragment;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     BottomNavigationView bottomNavigationView_;
     FragmentManager fragmentManager_;
     Toolbar toolbar_;
+    RelativeLayout contentHolder_;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,36 +72,55 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         bottomNavigationView_ = findViewById(R.id.bottom_nav);
         bottomNavigationView_.setBackground(null);
         bottomNavigationView_.setOnItemSelectedListener(menuItem -> {
-            int item = menuItem.getItemId();
-
-            if (item == R.id.bottom_nav_menu_map) openFragment(new MapFragment());
-            else if (item == R.id.bottom_nav_menu_routes) openFragment(new RoutesFragment());
-            else if (item == R.id.bottom_nav_menu_history) openFragment(new HistoryFragment());
-            else if (item == R.id.bottom_nav_menu_users) openFragment(new UsersFragment());
-
+            openPage(menuItem.getItemId());
             return true;
         });
 
+        contentHolder_ = findViewById(R.id.content_holder);
+
         fragmentManager_ = getSupportFragmentManager();
-        openFragment(new MapFragment());
+        setHeaderFragment(new MapFragment());
 
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        int item = menuItem.getItemId();
-
-        if (item == R.id.nav_main) openFragment(new MapFragment());
-        else if (item == R.id.nav_profile) openFragment(new ProfileFragment());
-        else if (item == R.id.nav_settings) openFragment(new SettingsFragment());
-
+        openPage(menuItem.getItemId());
         drawerLayout_.closeDrawer(GravityCompat.START);
         return true;
     }
 
-    private void openFragment(Fragment fragment) {
+    private void openPage(int pageSourceId) {
+        if (pageSourceId == R.id.nav_profile || pageSourceId == R.id.nav_settings) {
+            Intent intent;
+            if (pageSourceId == R.id.nav_profile) intent = new Intent(this, ProfileActivity.class);
+            else intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
+            return;
+        }
+
+        if (pageSourceId == R.id.nav_main || pageSourceId == R.id.bottom_nav_menu_map) {
+            setHeaderFragment(new MapFragment());
+        }
+        else if (pageSourceId == R.id.bottom_nav_menu_routes) {
+            setHeaderFragment(new RoutesFragment());
+        }
+        else if (pageSourceId == R.id.bottom_nav_menu_history) {
+            setHeaderFragment(new HistoryFragment());
+        }
+        else if (pageSourceId == R.id.bottom_nav_menu_users) {
+            setHeaderFragment(new UsersFragment());
+        }
+    }
+
+    private void setHeaderFragment(Fragment fragment) {
         FragmentTransaction transaction = fragmentManager_.beginTransaction();
         transaction.replace(R.id.fragment_container, fragment);
         transaction.commit();
+        emptyContentHolder();
+    }
+
+    private void emptyContentHolder() {
+        while (contentHolder_.getChildCount() > 0) contentHolder_.removeViewAt(0);
     }
 }
