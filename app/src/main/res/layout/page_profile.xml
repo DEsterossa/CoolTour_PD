@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="20"
+    android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="5"
+        android:gravity="center"
+        android:background="@color/wisteria">
+        <ImageView
+            android:id="@+id/profile_picture"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/txt_profile"
+            android:src="@drawable/baseline_account_circle_128"
+            />
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:gravity="center"
+        android:orientation="horizontal">
+        <TextView
+            android:text="@string/txt_profile_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="32sp"/>
+        <EditText
+            android:hint="@string/txt_enter_name"
+            android:autofillHints="name"
+            android:inputType="text"
+            android:text="@string/txt_empty_user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="32sp"/>
+    </LinearLayout>
+    <Button
+        android:id="@+id/save_profile_changes"
+        android:layout_width="300dp"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:layout_gravity="center"
+        android:text="@string/txt_save"
+        android:textSize="32sp" />
+
+</LinearLayout>

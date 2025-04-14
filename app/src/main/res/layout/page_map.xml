@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.yandex.mapkit.mapview.MapView
+        android:id="@+id/map_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    <LinearLayout
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
+        android:background="#00000000"
+        android:gravity="center|end"
+        android:orientation="vertical"
+        android:layout_alignParentEnd="true"
+        tools:ignore="UselessParent">
+
+        <ImageButton
+            android:id="@+id/zoom_in"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginBottom="10dp"
+            android:background="@color/lavender_floral"
+            android:contentDescription="@string/txt_map"
+            android:src="@drawable/add_24dp_ffffff" />
+
+        <ImageButton
+            android:id="@+id/zoom_out"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:background="@color/lavender_floral"
+            android:contentDescription="@string/txt_map"
+            android:src="@drawable/remove_24dp_ffffff" />
+    </LinearLayout>
+</RelativeLayout>
