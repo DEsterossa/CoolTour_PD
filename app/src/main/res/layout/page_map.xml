@@ -21,7 +21,7 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_marginBottom="10dp"
-            android:background="@color/lavender_floral"
+            android:background="@drawable/round_corner"
             android:contentDescription="@string/txt_map"
             android:src="@drawable/add_24dp_ffffff" />
 
@@ -29,8 +29,15 @@
             android:id="@+id/zoom_out"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:background="@color/lavender_floral"
+            android:background="@drawable/round_corner"
             android:contentDescription="@string/txt_map"
             android:src="@drawable/remove_24dp_ffffff" />
+
+        <TextView
+            android:id="@+id/map_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="@string/txt_empty" />
     </LinearLayout>
 </RelativeLayout>

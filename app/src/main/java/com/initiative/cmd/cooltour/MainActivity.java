@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
@@ -32,8 +33,18 @@ import com.initiative.cmd.cooltour.fragments.ProfileHeaderFragment;
 import com.initiative.cmd.cooltour.fragments.RoutesHeaderFragment;
 import com.initiative.cmd.cooltour.fragments.SettingsHeaderFragment;
 import com.initiative.cmd.cooltour.fragments.UsersHeaderFragment;
+import com.yandex.mapkit.Animation;
 import com.yandex.mapkit.MapKitFactory;
+import com.yandex.mapkit.map.CameraListener;
+import com.yandex.mapkit.map.CameraUpdateReason;
+import com.yandex.mapkit.map.Map;
+import com.yandex.mapkit.map.MapObjectCollection;
+import com.yandex.mapkit.map.MapWindow;
+import com.yandex.mapkit.map.PlacemarkMapObject;
 import com.yandex.mapkit.mapview.MapView;
+import com.yandex.mapkit.map.CameraPosition;
+import com.yandex.mapkit.geometry.Point;
+import com.yandex.runtime.image.ImageProvider;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     DrawerLayout drawerLayout_;
@@ -43,6 +54,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     Toolbar toolbar_;
     RelativeLayout contentHolder_;
     MapView mapView_;
+
+    CameraListener camListener_ = (map, cameraPosition, cameraUpdateReason, b) -> {
+        Point pt = cameraPosition.getTarget();
+        TextView tv = findViewById(R.id.map_info);
+
+        String txt = "Latitude: " + pt.getLatitude() + "\n" +
+                "Longitude: " + pt.getLongitude() + "\n";
+        tv.setText(txt);
+    };
 
     @SuppressLint("InflateParams")
     @Override
@@ -90,9 +110,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
 
         contentHolder_ = findViewById(R.id.content_holder);
-
         mapView_ = LayoutInflater.from(this).inflate(R.layout.page_map, null).findViewById(R.id.map_view);
-
         fragmentManager_ = getSupportFragmentManager();
         switchToPage(R.id.bottom_nav_menu_map);
     }
@@ -177,16 +195,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void loadPageScript(int pgSrcId) {
         if (pgSrcId == R.id.nav_main || pgSrcId == R.id.bottom_nav_menu_map) {
+            mapView_ = findViewById(R.id.map_view);
+
             ImageButton zoomIn = findViewById(R.id.zoom_in);
             ImageButton zoomOut = findViewById(R.id.zoom_out);
 
-            zoomIn.setOnClickListener(v -> {
-
-            });
-
-            zoomOut.setOnClickListener(v -> {
-
-            });
+            MapWindow mapWindow = mapView_.getMapWindow();
+            Map map = mapWindow.getMap();
+            map.addCameraListener(camListener_);
+            zoomIn.setOnClickListener(v -> zoomIn(1f));
+            zoomOut.setOnClickListener(v -> zoomOut(1f));
         }
     }
 
@@ -204,5 +222,63 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Menu menu = bottomNavigationView_.getMenu();
         for (int i = 0; i < menu.size(); i++) menu.getItem(i).setChecked(false);
         if (itemIndex >= 0) menu.getItem(itemIndex).setChecked(true);
+    }
+
+    private PlacemarkMapObject addPlacemark(
+            Point pt,
+            ImageProvider icon,
+            String text,
+            boolean moveToPt
+    ) {
+        MapWindow mapWindow = mapView_.getMapWindow();
+        Map map = mapWindow.getMap();
+        MapObjectCollection mapObjects = map.getMapObjects();
+
+        if (moveToPt) {
+            CameraPosition camPos = new CameraPosition(
+                    pt,
+                    map.getCameraPosition().getZoom(),
+                    map.getCameraPosition().getAzimuth(),
+                    map.getCameraPosition().getTilt()
+            );
+
+            map.move(camPos);
+        }
+
+        PlacemarkMapObject placemarkMapObject = mapObjects.addPlacemark();
+        placemarkMapObject.setGeometry(pt);
+        placemarkMapObject.setIcon(icon);
+        placemarkMapObject.setText(text);
+        return placemarkMapObject;
+    }
+
+    private PlacemarkMapObject addPlacemark(
+            Point pt,
+            ImageProvider icon,
+            String text
+    ) {
+        return addPlacemark(pt, icon, text, false);
+    }
+
+    private void zoomIn(
+            float delta
+    ) {
+        MapWindow mapWindow = mapView_.getMapWindow();
+        Map map = mapWindow.getMap();
+        CameraPosition camPos = map.getCameraPosition();
+        CameraPosition newCamPos = new CameraPosition(
+                camPos.getTarget(),
+                camPos.getZoom() + delta,
+                camPos.getAzimuth(),
+                camPos.getTilt()
+        );
+
+        map.move(newCamPos, new Animation(Animation.Type.SMOOTH, 0.3f), null);
+    }
+
+    private void zoomOut(
+            float delta
+    ) {
+        zoomIn(-delta);
     }
 }
